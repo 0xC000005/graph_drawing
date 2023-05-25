@@ -143,4 +143,11 @@ vis.plot(
     node_size=1,
     edge_width=1,
 )
-plt.show()
+# plt.show()
+
+# save the plot as img.png
+plt.savefig(f'output/{graph_name}.png',
+            dpi=300,
+            bbox_inches='tight')
+
+plt.close()
