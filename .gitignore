@@ -9,3 +9,5 @@ __pycache__
 
 gd_hypercube/
 figures-tmp/
+
+.idea/
