@@ -146,8 +146,7 @@ vis.plot(
 # plt.show()
 
 # save the plot as img.png
-plt.savefig(f'output/{graph_name}.png',
-            dpi=300,
-            bbox_inches='tight')
+plt.savefig(f'{graph_name}.png',
+            dpi=300)
 
 plt.close()
