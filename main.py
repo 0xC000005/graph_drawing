@@ -134,13 +134,18 @@ def save_layout_as_dot(gd, filename):
     # Save as .dot file
     nx.drawing.nx_pydot.write_dot(gd.G, filename)
 
-# turn gd into a position dataframe, format: vertex, x, y
+# turn gd into a position dataframe, format: index, vertex, x, y
 def gd_to_df(gd):
     pos = gd.pos.detach().numpy().tolist()
     pos_G = {k: pos[gd.k2i[k]] for k in gd.G.nodes}
-    df = pd.DataFrame.from_dict(pos_G, orient='index', columns=['x', 'y'])
-    df.index.name = 'vertex'
+
+    df = pd.DataFrame.from_dict(pos_G, orient='index')
+    df = df.reset_index()
+    df.columns = ['vertex', 'x', 'y']
+    df['index'] = df.index
+    df = df[['index', 'vertex', 'x', 'y']]
     return df
+
 
 
 # Run the optimization and print the results
