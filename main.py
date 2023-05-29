@@ -1,30 +1,43 @@
-# Standard library imports
-from collections import defaultdict
-from glob import glob
-from pathlib import Path
-import itertools
-import math
-import os
-import random
-import time
-import pickle as pkl
+# custom
+from utils import utils, vis
+# from utils import poly_point_isect as bo   ##bentley-ottmann sweep line
+import criteria as C
+import quality as Q
+# import gd2
+from gd2 import GD2
+import utils.weight_schedule as ws
 
-# Third party imports
-import matplotlib.pyplot as plt
+# third party
 import networkx as nx
+# from PIL import Image
 from natsort import natsorted
+
+# numeric
 import numpy as np
+# import scipy.io as io
 import torch
 from torch import nn, optim
 import torch.nn.functional as F
-import tqdm
 
-# Local application imports
-from gd2 import GD2
-import criteria as C
-import quality as Q
-import utils
-from utils import vis, weight_schedule as ws
+# vis
+import tqdm
+import matplotlib.pyplot as plt
+# import matplotlib.animation as animation
+# from matplotlib.colors import LinearSegmentedColormap
+# from mpl_toolkits import mplot3d
+# from matplotlib import collections  as mc
+# from mpl_toolkits.mplot3d.art3d import Line3DCollection
+
+# sys
+from collections import defaultdict
+import random
+import time
+from glob import glob
+import math
+import os
+from pathlib import Path
+import itertools
+import pickle as pkl
 
 # Set the style for the plots
 plt.style.use('ggplot')
