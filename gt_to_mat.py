@@ -32,5 +32,21 @@ structured_array = np.array([(metadata['description'], metadata['matrix'], metad
                                    ('id', 'O'), ('year', 'O'), ('authors', 'O'),
                                    ('editors', 'O'), ('problem', 'O')])
 
-# Save the structured array in a .mat file
-sio.savemat('input_graphs/price_10000nodes.mat', {'Problem': structured_array}, do_compression=True)
+# Create a dictionary in the format that the s_gd2 script expects
+mat_file_dict = {
+    '__header__': b'MATLAB 5.0 MAT-file, Platform: GLNXA64, Created on: Sat Sep  6 04:06:08 2008',
+    '__version__': '1.0',
+    '__globals__': [],
+    'Problem': {
+        'A': structured_array,
+        'name': metadata['name'],
+        'id': metadata['id'],
+        'date': metadata['year'],
+        'author': metadata['authors'],
+        'editor': metadata['editors'],
+        'kind': metadata['problem']
+    }
+}
+
+# Save the dictionary in a .mat file
+sio.savemat('input_graphs/price_10000nodes.mat', mat_file_dict, do_compression=True)
