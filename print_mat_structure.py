@@ -22,4 +22,4 @@ def print_mat_file(filename):
                         print(f"    {item}")
 
 
-print_mat_file('your_mat_file.mat')
+print_mat_file('input_graphs/SuiteSparse Matrix Collection/dwt_307.mat')
