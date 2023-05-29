@@ -1,4 +1,5 @@
 import scipy.io
+import numpy as np
 
 
 def print_mat_file(filename):
