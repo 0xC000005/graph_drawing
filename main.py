@@ -33,9 +33,9 @@ plt.style.use('seaborn-colorblind')
 # Constants
 DEVICE = 'cpu'
 SEED = 2337
-GRAPH_NAME = 'dwt_307'
+GRAPH_NAME = 'price_10000nodes'
 MAX_ITER = int(1e4)
-MAT_DIR = 'input_graphs/SuiteSparse Matrix Collection'
+MAT_DIR = 'input_graphs/'
 
 # Set seed for reproducibility
 random.seed(SEED)

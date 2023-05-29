@@ -29,7 +29,10 @@ def load_csv_to_mat(filename):
 
 if __name__ == '__main__':
     # Use the functions
-    gt_graph = gt.Graph()  # Replace with your graph_tool graph
+    # gt_graph = gt.Graph()  # Replace with your graph_tool graph
+    # load graphml from ../netviz/sample_graphs/price_10000nodes.graphml
+    gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
+
     nx_graph = convert_gt_to_nx(gt_graph)
     scipy_matrix = convert_nx_to_scipy(nx_graph)
-    save_scipy_to_mat(scipy_matrix, 'graph.mat')
+    save_scipy_to_mat(scipy_matrix, 'input_graphs/price_10000nodes.mat')
