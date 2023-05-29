@@ -14,23 +14,14 @@ csc_matrix = adj_matrix.tocsc()
 
 # Define the metadata
 metadata = {
-    'description': np.array(['SOCIAL NETWORK CONNECTION TABLE'], dtype='<U30'),
-    'matrix': csc_matrix,
-    'name': np.array(['graph'], dtype='<U10'),
-    'id': np.array([[121]], dtype=np.uint8),  # Arbitrary ID
-    'year': np.array(['2023'], dtype='<U4'),  # Current year
-    'authors': np.array(['Unknown'], dtype='<U7'),
-    'editors': np.array(['Unknown'], dtype='<U7'),
-    'problem': np.array(['social network problem'], dtype='<U21')
+    'description': 'SOCIAL NETWORK CONNECTION TABLE',
+    'name': 'graph',
+    'id': 121,  # Arbitrary ID
+    'year': '2023',  # Current year
+    'authors': 'Unknown',
+    'editors': 'Unknown',
+    'problem': 'social network problem'
 }
-
-# Create a structured numpy array to hold the metadata
-structured_array = np.array([(metadata['description'], metadata['matrix'], metadata['name'],
-                              metadata['id'], metadata['year'], metadata['authors'],
-                              metadata['editors'], metadata['problem'])],
-                            dtype=[('description', 'O'), ('matrix', 'O'), ('name', 'O'),
-                                   ('id', 'O'), ('year', 'O'), ('authors', 'O'),
-                                   ('editors', 'O'), ('problem', 'O')])
 
 # Create a dictionary in the format that the s_gd2 script expects
 mat_file_dict = {
@@ -38,7 +29,7 @@ mat_file_dict = {
     '__version__': '1.0',
     '__globals__': [],
     'Problem': {
-        'A': structured_array,
+        'A': csc_matrix,
         'name': metadata['name'],
         'id': metadata['id'],
         'date': metadata['year'],
