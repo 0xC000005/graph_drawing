@@ -1,25 +1,19 @@
-# custom
 from utils import utils, vis
-# from utils import poly_point_isect as bo   ##bentley-ottmann sweep line
+# from utils import poly_point_isect as bo
 import criteria as C
 import quality as Q
 # import gd2
 from gd2 import GD2
 import utils.weight_schedule as ws
-
-# third party
 import networkx as nx
 # from PIL import Image
 from natsort import natsorted
-
-# numeric
 import numpy as np
+import pandas as pd
 # import scipy.io as io
 import torch
 from torch import nn, optim
 import torch.nn.functional as F
-
-# vis
 import tqdm
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -27,8 +21,7 @@ from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits import mplot3d
 from matplotlib import collections  as mc
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
-
-# sys
+from pos_df_to_graph import pos_df_to_graph
 from collections import defaultdict
 import random
 import time
@@ -38,6 +31,7 @@ import os
 from pathlib import Path
 import itertools
 import pickle as pkl
+import graph_tool.all as gt
 
 # Set the style for the plots
 plt.style.use('ggplot')
@@ -140,6 +134,15 @@ def save_layout_as_dot(gd, filename):
     # Save as .dot file
     nx.drawing.nx_pydot.write_dot(gd.G, filename)
 
+# turn gd into a position dataframe, format: vertex, x, y
+def gd_to_df(gd):
+    pos = gd.pos.detach().numpy().tolist()
+    pos_G = {k: pos[gd.k2i[k]] for k in gd.G.nodes}
+    df = pd.DataFrame.from_dict(pos_G, orient='index', columns=['x', 'y'])
+    df.index.name = 'vertex'
+    return df
+
+
 # Run the optimization and print the results
 gd, result = run_optimization(G)
 print_nodes_and_edges(gd)
@@ -148,3 +151,7 @@ print_nodes_and_edges(gd)
 visualize_and_save(gd, result)
 
 save_layout_as_dot(gd, 'final_layout.dot')
+
+pos_df = gd_to_df(gd)
+gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
+pos_df_to_graph(graphml=gt_graph, pos_df=pos_df, output_filename='price_10000nodes_layout_by_gt'
