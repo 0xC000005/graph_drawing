@@ -7,7 +7,7 @@ import numpy as np
 gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
 
 # Get the adjacency matrix as a scipy sparse matrix
-adj_matrix = gt.adjacency(graph)
+adj_matrix = gt.adjacency(gt_graph)
 
 # Convert the adjacency matrix to CSC format
 csc_matrix = adj_matrix.tocsc()
