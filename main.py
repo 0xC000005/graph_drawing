@@ -22,11 +22,11 @@ import torch.nn.functional as F
 # vis
 import tqdm
 import matplotlib.pyplot as plt
-# import matplotlib.animation as animation
-# from matplotlib.colors import LinearSegmentedColormap
-# from mpl_toolkits import mplot3d
-# from matplotlib import collections  as mc
-# from mpl_toolkits.mplot3d.art3d import Line3DCollection
+import matplotlib.animation as animation
+from matplotlib.colors import LinearSegmentedColormap
+from mpl_toolkits import mplot3d
+from matplotlib import collections  as mc
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 # sys
 from collections import defaultdict
