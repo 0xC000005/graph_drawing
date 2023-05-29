@@ -8,7 +8,7 @@ def pos_df_to_graph(graphml, pos_df, name, resolution=1000):
     pos = g.new_vertex_property("vector<double>")
 
     # if the vertex name is a string like n1234, convert it to integer 1234
-    pos_df['vertex'] = pos_df['vertex'].apply(lambda x: int(re.sub("[^0-9]", "", x)))
+    pos_df['vertex'] = pos_df['vertex'].astype(str).apply(lambda x: int(re.sub("[^0-9]", "", x)))
 
     for i in range(len(pos_df)):
         pos[pos_df.iloc[i]['vertex']] = [pos_df.iloc[i]['x'], pos_df.iloc[i]['y']]
