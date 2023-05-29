@@ -1,38 +1,36 @@
 import graph_tool.all as gt
-import networkx as nx
-import scipy.io
-from scipy.sparse import coo_matrix
+import scipy.sparse as sp
+import scipy.io as sio
+import numpy as np
 
-# Convert graph_tool graph to networkx graph
-def convert_gt_to_nx(g):
-    nx_graph = nx.Graph()
-    for edge in g.edges():
-        nx_graph.add_edge(*edge)
-    return nx_graph
+# Load the graphml file
+gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
 
-# Convert networkx graph to scipy sparse matrix
-def convert_nx_to_scipy(nx_graph):
-    adj_matrix = nx.to_scipy_sparse_matrix(nx_graph)
-    return adj_matrix
+# Get the adjacency matrix as a scipy sparse matrix
+adj_matrix = gt.adjacency(graph)
 
-# Save scipy sparse matrix to .mat file
-def save_scipy_to_mat(adj_matrix, filename):
-    scipy.io.savemat(filename, {'graph': adj_matrix})
+# Convert the adjacency matrix to CSC format
+csc_matrix = adj_matrix.tocsc()
 
+# Define the metadata
+metadata = {
+    'description': np.array(['SOCIAL NETWORK CONNECTION TABLE'], dtype='<U30'),
+    'matrix': csc_matrix,
+    'name': np.array(['graph'], dtype='<U10'),
+    'id': np.array([[121]], dtype=np.uint8),  # Arbitrary ID
+    'year': np.array(['2023'], dtype='<U4'),  # Current year
+    'authors': np.array(['Unknown'], dtype='<U7'),
+    'editors': np.array(['Unknown'], dtype='<U7'),
+    'problem': np.array(['social network problem'], dtype='<U21')
+}
 
-# Load a csv edgelists into a networkx graph and save as .mat file
-def load_csv_to_mat(filename):
-    nx_graph = nx.read_edgelist(filename, delimiter=',')
-    adj_matrix = nx.to_scipy_sparse_matrix(nx_graph)
-    scipy.io.savemat(filename.replace('.csv', '.mat'), {'graph': adj_matrix})
+# Create a structured numpy array to hold the metadata
+structured_array = np.array([(metadata['description'], metadata['matrix'], metadata['name'],
+                              metadata['id'], metadata['year'], metadata['authors'],
+                              metadata['editors'], metadata['problem'])],
+                            dtype=[('description', 'O'), ('matrix', 'O'), ('name', 'O'),
+                                   ('id', 'O'), ('year', 'O'), ('authors', 'O'),
+                                   ('editors', 'O'), ('problem', 'O')])
 
-
-if __name__ == '__main__':
-    # Use the functions
-    # gt_graph = gt.Graph()  # Replace with your graph_tool graph
-    # load graphml from ../netviz/sample_graphs/price_10000nodes.graphml
-    gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
-
-    nx_graph = convert_gt_to_nx(gt_graph)
-    scipy_matrix = convert_nx_to_scipy(nx_graph)
-    save_scipy_to_mat(scipy_matrix, 'input_graphs/price_10000nodes.mat')
+# Save the structured array in a .mat file
+sio.savemat('input_graphs/price_10000nodes.mat', {'Problem': structured_array}, do_compression=True)
