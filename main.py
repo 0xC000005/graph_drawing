@@ -63,9 +63,9 @@ CRITERIA = list(CRITERIA_WEIGHTS.keys())
 # Set the sample sizes
 SAMPLE_SIZES = {
     'stress': 16,
-    'ideal_edge_length': 16,
+    'ideal_edge_length': 16*5,
     'neighborhood_preservation': 16,
-    'crossings': 128,
+    'crossings': 128*5,
     'crossing_angle_maximization': 64,
     'aspect_ratio': max(128, int(len(G) ** 0.5)),
     'angular_resolution': 16,
