@@ -41,7 +41,7 @@ plt.style.use('seaborn-colorblind')
 DEVICE = 'cpu'
 SEED = 2337
 GRAPH_NAME = 'price_10000nodes'
-MAX_ITER = int(1e5)
+MAX_ITER = int(1e6)
 MAT_DIR = 'input_graphs/'
 
 # Set seed for reproducibility
