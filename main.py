@@ -58,9 +58,9 @@ torch.manual_seed(SEED)
 G = utils.load_mat(f'{MAT_DIR}/{GRAPH_NAME}.mat')
 
 CRITERIA_WEIGHTS = dict(
-    stress=ws.SmoothSteps([MAT_DIR/4, MAT_DIR], [1, 0.05]),
-    ideal_edge_length=ws.SmoothSteps([0, MAT_DIR*0.2, MAT_DIR*0.6, MAT_DIR], [0, 0, 0.2, 0]),
-    aspect_ratio=ws.SmoothSteps([0, MAT_DIR*0.2, MAT_DIR*0.6, MAT_DIR], [0, 0, 0.5, 0]),
+    stress=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
+    ideal_edge_length=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.2, 0]),
+    aspect_ratio=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.5, 0]),
 )
 SAMPLE_SIZES = dict(
     stress=32,
