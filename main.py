@@ -54,9 +54,9 @@ plt.style.use('seaborn-colorblind')
 # graph_str = 'grid_6_10'
 # dir_out = './analysis/criteria_pairs/grid_6_10-t1636413141'
 
-# load graphml using networkx
+# load graphml using graph-tool
 print('loading graph')
-G = nx.barabasi_albert_graph(n=1000, m=800)
+G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
 print('the graph is loaded')
 
 import importlib
@@ -114,3 +114,4 @@ print(result['qualities'])
 
 
 
+# visulized the network from netwokrx
