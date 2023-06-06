@@ -60,13 +60,7 @@ G = utils.load_mat(f'{MAT_DIR}/{GRAPH_NAME}.mat')
 CRITERIA_WEIGHTS = dict(
     stress=1,
     ideal_edge_length=0.05,
-    neighborhood_preservation=0.5,
-    crossings=0.2,
-    crossing_angle_maximization=0.1,
     aspect_ratio=3,
-    angular_resolution=1,
-    vertex_resolution=1,
-    gabriel=0.1,
 )
 
 SAMPLE_SIZES = dict(
@@ -81,7 +75,6 @@ SAMPLE_SIZES = dict(
     gabriel=64,
 )
 
-## choose criteria
 CRITERIA_ALL = [
     'stress',
     'ideal_edge_length',
