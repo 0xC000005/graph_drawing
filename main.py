@@ -52,6 +52,7 @@ plt.style.use('seaborn-colorblind')
 
 # G = nx.balanced_tree(2,5)
 # graph_str = 'tree_2_5'
+# G = nx.balanced_tree(2,5)
 # dir_out = './analysis/criteria_pairs/tree_2_5-t1636413236'
 
 # G = nx.grid_2d_graph(6,10)
@@ -60,7 +61,8 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using networkx
 print('loading graph')
-G = nx.barabasi_albert_graph(n=100, m=99)
+# G = nx.barabasi_albert_graph(n=100, m=99)
+G = nx.balanced_tree(2,5)
 print('the graph is loaded')
 
 import importlib
