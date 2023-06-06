@@ -160,7 +160,7 @@ save_layout_as_dot(gd, 'final_layout.dot')
 pos_df = gd_to_df(gd)
 # print the first 5 rows of the dataframe
 print(pos_df.head())
-print(11111111111111111111111111111111111111111111111111)
+
 
 gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
 pos_df_to_graph(graphml=gt_graph, pos_df=pos_df, name='price_10000nodes_layout_by_gt')
