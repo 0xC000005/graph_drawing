@@ -57,42 +57,77 @@ torch.manual_seed(SEED)
 # Load the graph
 G = utils.load_mat(f'{MAT_DIR}/{GRAPH_NAME}.mat')
 
+# CRITERIA_WEIGHTS = dict(
+#     stress=1,
+#     ideal_edge_length=0.05,
+#     neighborhood_preservation=0.5,
+#     crossings=0.2,
+#     crossing_angle_maximization=0.1,
+#     aspect_ratio=3,
+#     angular_resolution=1,
+#     vertex_resolution=1,
+#     gabriel=0.1,
+# )
+#
+# SAMPLE_SIZES = dict(
+#     stress=32,
+#     ideal_edge_length=32,
+#     neighborhood_preservation=16,
+#     crossings=128,
+#     crossing_angle_maximization=16,
+#     aspect_ratio=max(128, int(len(G) ** 0.5)),
+#     angular_resolution=128,
+#     vertex_resolution=max(256, int(len(G) ** 0.5)),
+#     gabriel=64,
+# )
+#
+# CRITERIA_ALL = [
+#     'stress',
+#     'ideal_edge_length',
+#     'neighborhood_preservation',
+#     'crossings',
+#     'crossing_angle_maximization',
+#     'aspect_ratio',
+#     'angular_resolution',
+#     'vertex_resolution',
+#     'gabriel',
+# ]
+
+
+
+CRITERIA = ['stress', 'ideal_edge_length', 'aspect_ratio']
 CRITERIA_WEIGHTS = dict(
     stress=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
     ideal_edge_length=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.2, 0]),
     aspect_ratio=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.5, 0]),
 )
+criteria = list(CRITERIA_WEIGHTS.keys())
+
+
+
 SAMPLE_SIZES = dict(
-    stress=32,
-    ideal_edge_length=32,
+    stress=16,
+    ideal_edge_length=16,
     neighborhood_preservation=16,
     crossings=128,
-    crossing_angle_maximization=16,
-    aspect_ratio=max(128, int(len(G) ** 0.5)),
-    angular_resolution=128,
-    vertex_resolution=max(256, int(len(G) ** 0.5)),
+    crossing_angle_maximization=64,
+    aspect_ratio=max(128, int(len(G)**0.5)),
+    angular_resolution=16,
+    vertex_resolution=max(256, int(len(G)**0.5)),
     gabriel=64,
 )
+SAMPLE_SIZES = {c:SAMPLE_SIZES[c] for c in CRITERIA}
 
-CRITERIA_ALL = [
-    'stress',
-    'ideal_edge_length',
-    'neighborhood_preservation',
-    'crossings',
-    'crossing_angle_maximization',
-    'aspect_ratio',
-    'angular_resolution',
-    'vertex_resolution',
-    'gabriel',
-]
-
+print(CRITERIA_WEIGHTS)
+print(SAMPLE_SIZES)
+print(CRITERIA)
 
 def run_optimization(G):
     gd = GD2(G)
     result = gd.optimize(
         criteria_weights=CRITERIA_WEIGHTS,
         sample_sizes=SAMPLE_SIZES,
-        evaluate=CRITERIA_ALL,
+        evaluate=CRITERIA,
         max_iter=MAX_ITER,
         time_limit=3600,
         evaluate_interval=MAX_ITER//10, evaluate_interval_unit='iter',
