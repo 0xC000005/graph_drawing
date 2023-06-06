@@ -1,45 +1,60 @@
+## custom
 from utils import utils, vis
-from utils import poly_point_isect as bo
+from utils import poly_point_isect as bo   ##bentley-ottmann sweep line
 import criteria as C
 import quality as Q
 import gd2
-from gd2 import GD2
-import utils.weight_schedule as ws
+
+
+## third party
 import networkx as nx
+
 from PIL import Image
 from natsort import natsorted
-import numpy as np
-import pandas as pd
-import scipy.io as io
-import torch
-from torch import nn, optim
-import torch.nn.functional as F
-import tqdm
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.colors import LinearSegmentedColormap
-from mpl_toolkits import mplot3d
-from matplotlib import collections as mc
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
-from pos_df_to_graph import pos_df_to_graph
-from collections import defaultdict
+
+
+## sys
 import random
 import time
 from glob import glob
 import math
+from collections import defaultdict
 import os
 from pathlib import Path
 import itertools
 import pickle as pkl
-import graph_tool.all as gt
 
-# Set the style for the plots
+## numeric
+import numpy as np
+import scipy.io as io
+import torch
+from torch import nn, optim
+import torch.nn.functional as F
+
+
+## vis
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.colors import LinearSegmentedColormap
+from mpl_toolkits import mplot3d
+from matplotlib import collections  as mc
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
+from matplotlib.gridspec import GridSpec
+
+## notebook
+# from IPython import display
+# from IPython.display import clear_output
+# from tqdm.notebook import tqdm
+
+import graph_tool.all as gt
+import pandas as pd
+
+device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+device = 'cpu'
 plt.style.use('ggplot')
 plt.style.use('seaborn-colorblind')
 
-# Constants
-DEVICE = 'cpu'
-SEED = 2337
+
 # GRAPH_NAME = 'price_10000nodes'
 # MAX_ITER = int(1e4)
 # MAT_DIR = 'input_graphs/'
@@ -48,11 +63,6 @@ GRAPH_NAME = 'dwt_307'
 MAX_ITER = int(1e4)
 MAT_DIR = 'input_graphs/SuiteSparse Matrix Collection'
 
-
-# Set seed for reproducibility
-random.seed(SEED)
-np.random.seed(SEED)
-torch.manual_seed(SEED)
 
 # Load the graph
 G = utils.load_mat(f'{MAT_DIR}/{GRAPH_NAME}.mat')
@@ -106,25 +116,51 @@ criteria_all = [
 ]
 
 
+
+
 def run_optimization(G):
-    seed = 2337
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    gd = GD2(G)
-    result = gd.optimize(
-        criteria_weights=criteria_weights,
-        sample_sizes=sample_sizes,
-        evaluate=criteria_all,
-        max_iter=1000,
-        evaluate_interval=1000 // 40,
-        vis_interval=-1,
-        criteria_kwargs=dict(aspect_ratio=dict(target=[1, 1]), ),
-        optimizer_kwargs=dict(mode='SGD', lr=2),
-        scheduler_kwargs=dict(verbose=False),
-    )
-    print(result['qualities'])
-    return gd, result
+    criteria_pairs = [
+        (ci, cj) for (i, ci), (j, cj)
+        in list(
+            itertools.product(
+                enumerate(criteria_all),
+                enumerate(criteria_all)
+            ))
+        #     if i<=j
+        if i <= j and 'angular_resolution' in (ci, cj)
+    ]
+
+    for ci, cj in criteria_pairs:
+        criteria_pair = {ci, cj}
+        print(criteria_pair)
+        print(criteria_pair)
+        print(criteria_pair)
+        print(criteria_pair)
+
+        seed = 2337
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+
+        gd = GD2(G)
+
+        result = gd.optimize(
+            criteria_weights={c: criteria_weights[c] for c in criteria_pair},
+            sample_sizes=sample_sizes,
+            evaluate=criteria_all,
+
+            max_iter=1000,
+            evaluate_interval=1000 // 40,
+            vis_interval=-1,
+            #             clear_output=True,
+            criteria_kwargs=dict(
+                aspect_ratio=dict(target=[1, 1]),
+            ),
+            #         optimizer_kwargs = dict(mode='Adam', lr=0.005),
+            optimizer_kwargs=dict(mode='SGD', lr=2),
+            scheduler_kwargs=dict(verbose=False),
+        )
+        print(result['qualities'])
 
 
 def print_nodes_and_edges(gd):
