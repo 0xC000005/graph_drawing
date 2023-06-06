@@ -189,7 +189,7 @@ def find_crossings(pos, G_edges, k2i):
 #     t0 = tick(t0, 'c')
     if len(crossing_segs) > 0:
         crossing_segs = crossing_segs[:,:,:,2].reshape([crossing_segs.shape[0], -1])
-        crossing_segs = crossing_segs.astype(np.int)## indices of 4 nodes in edge crossing pairs
+        crossing_segs = crossing_segs.astype(int)## indices of 4 nodes in edge crossing pairs
         return crossing_segs
     else:
         return np.zeros([0,4])

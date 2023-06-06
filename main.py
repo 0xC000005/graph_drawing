@@ -1,16 +1,16 @@
 from utils import utils, vis
-# from utils import poly_point_isect as bo
+from utils import poly_point_isect as bo
 import criteria as C
 import quality as Q
-# import gd2
+import gd2
 from gd2 import GD2
 import utils.weight_schedule as ws
 import networkx as nx
-# from PIL import Image
+from PIL import Image
 from natsort import natsorted
 import numpy as np
 import pandas as pd
-# import scipy.io as io
+import scipy.io as io
 import torch
 from torch import nn, optim
 import torch.nn.functional as F
@@ -99,7 +99,7 @@ CRITERIA = ['stress', 'ideal_edge_length', 'aspect_ratio']
 CRITERIA_WEIGHTS = dict(
     stress=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
     ideal_edge_length=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.2, 0]),
-    
+    aspect_ratio=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.5, 0]),
     crossings=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [0.05, 0.05]),
 )
 CRITERIA = list(CRITERIA_WEIGHTS.keys())
