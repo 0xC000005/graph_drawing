@@ -70,40 +70,22 @@ importlib.reload(gd2)
 from gd2 import GD2
 
 criteria_weights = dict(
-    stress=1,
     ideal_edge_length=0.05,
-    neighborhood_preservation=0.5,
     crossings=0.2,
     crossing_angle_maximization=0.1,
-    aspect_ratio=3,
-    angular_resolution=1,
-    vertex_resolution=1,
-    gabriel=0.1,
 )
 
 sample_sizes = dict(
-    stress=32,
     ideal_edge_length=32,
-    neighborhood_preservation=16,
     crossings=128,
     crossing_angle_maximization=16,
-    aspect_ratio=max(128, int(len(G) ** 0.5)),
-    angular_resolution=128,
-    vertex_resolution=max(256, int(len(G) ** 0.5)),
-    gabriel=64,
 )
 
 ## choose criteria
 criteria_all = [
-    'stress',
     'ideal_edge_length',
-    'neighborhood_preservation',
     'crossings',
     'crossing_angle_maximization',
-    'aspect_ratio',
-    'angular_resolution',
-    'vertex_resolution',
-    'gabriel',
 ]
 
 seed = 2337
