@@ -100,7 +100,7 @@ CRITERIA_WEIGHTS = dict(
     stress=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
     ideal_edge_length=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.2, 0]),
     aspect_ratio=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.5, 0]),
-    crossings=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
+    crossings=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [0.05, 0.05]),
 )
 CRITERIA = list(CRITERIA_WEIGHTS.keys())
 
@@ -117,7 +117,7 @@ SAMPLE_SIZES = dict(
     vertex_resolution=max(256, int(len(G)**0.5)),
     gabriel=64,
 )
-SAMPLE_SIZES = {c:SAMPLE_SIZES[c] for c in CRITERIA}
+SAMPLE_SIZES = {C:SAMPLE_SIZES[C] for C in CRITERIA}
 
 print(CRITERIA_WEIGHTS)
 print(SAMPLE_SIZES)
@@ -131,7 +131,7 @@ def run_optimization(G):
         evaluate=CRITERIA,
         max_iter=MAX_ITER,
         time_limit=3600,
-        evaluate_interval=MAX_ITER//10, evaluate_interval_unit='iter',
+        evaluate_interval=MAX_ITER, evaluate_interval_unit='iter',
         vis_interval=-1, vis_interval_unit='sec',
         clear_output=True,
         criteria_kwargs=dict(aspect_ratio=dict(target=[1, 1])),
