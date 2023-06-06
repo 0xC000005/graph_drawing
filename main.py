@@ -43,12 +43,8 @@ from matplotlib.gridspec import GridSpec
 
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-device = 'cpu'
 plt.style.use('ggplot')
 plt.style.use('seaborn-colorblind')
-
-##TODO
-## redoing angular resolution
 
 # G = nx.balanced_tree(2,5)
 # graph_str = 'tree_2_5'
@@ -60,7 +56,7 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using networkx
 print('loading graph')
-G = nx.barabasi_albert_graph(n=100, m=50)
+G = nx.barabasi_albert_graph(n=10, m=9)
 print('the graph is loaded')
 
 import importlib
