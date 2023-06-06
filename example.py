@@ -76,14 +76,14 @@ G = utils.load_mat(f'{mat_dir}/{graph_name}.mat')
 
 criteria_weights = dict(
     stress=ws.SmoothSteps([0, max_iter], [0.30, 0.30]),  # constant weight of 0.30
-    vertex_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    edge_uniformity=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    ideal_edge_length=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
     neighborhood_preservation=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    crossing_angle=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    angular_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    crossings=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    crossing_angle_maximization=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
     aspect_ratio=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    angular_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    vertex_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
     gabriel=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    crossing_number=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
 )
 criteria = list(criteria_weights.keys())
 
