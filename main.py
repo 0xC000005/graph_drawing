@@ -99,7 +99,7 @@ CRITERIA = ['stress', 'ideal_edge_length', 'aspect_ratio']
 CRITERIA_WEIGHTS = dict(
     stress=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [1, 0.05]),
     ideal_edge_length=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.2, 0]),
-    aspect_ratio=ws.SmoothSteps([0, MAX_ITER*0.2, MAX_ITER*0.6, MAX_ITER], [0, 0, 0.5, 0]),
+    
     crossings=ws.SmoothSteps([MAX_ITER/4, MAX_ITER], [0.05, 0.05]),
 )
 CRITERIA = list(CRITERIA_WEIGHTS.keys())
