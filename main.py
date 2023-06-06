@@ -40,9 +40,14 @@ plt.style.use('seaborn-colorblind')
 # Constants
 DEVICE = 'cpu'
 SEED = 2337
-GRAPH_NAME = 'price_10000nodes'
+# GRAPH_NAME = 'price_10000nodes'
+# MAX_ITER = int(1e4)
+# MAT_DIR = 'input_graphs/'
+
+GRAPH_NAME = 'dwt_307'
 MAX_ITER = int(1e4)
-MAT_DIR = 'input_graphs/'
+MAT_DIR = 'input_graphs/SuiteSparse Matrix Collection'
+
 
 # Set seed for reproducibility
 random.seed(SEED)
@@ -176,5 +181,5 @@ pos_df = gd_to_df(gd)
 # print the first 5 rows of the dataframe
 print(pos_df.head())
 
-gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
-pos_df_to_graph(graphml=gt_graph, pos_df=pos_df, name='price_10000nodes_layout_by_gt')
+# gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
+# pos_df_to_graph(graphml=gt_graph, pos_df=pos_df, name='price_10000nodes_layout_by_gt')
