@@ -65,32 +65,14 @@ mat_dir = 'input_graphs/SuiteSparse Matrix Collection'
 G = utils.load_mat(f'{mat_dir}/{graph_name}.mat')
 
  
-# criteria = ['stress', 'ideal_edge_length', 'aspect_ratio']
-# criteria_weights = dict(
-#     stress=ws.SmoothSteps([max_iter/4, max_iter], [1, 0.05]),
-#     ideal_edge_length=ws.SmoothSteps([0, max_iter*0.2, max_iter*0.6, max_iter], [0, 0, 0.2, 0]),
-#     aspect_ratio=ws.SmoothSteps([0, max_iter*0.2, max_iter*0.6, max_iter], [0, 0, 0.5, 0]),
-# )
-# criteria = list(criteria_weights.keys())
-#
-
+criteria = ['stress', 'ideal_edge_length', 'aspect_ratio']
 criteria_weights = dict(
-    stress=ws.SmoothSteps([0, max_iter], [0.30, 0.30]),  # constant weight of 0.30
-    ideal_edge_length=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    neighborhood_preservation=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-
-    crossing_angle_maximization=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    aspect_ratio=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    angular_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    vertex_resolution=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
-    gabriel=ws.SmoothSteps([0, max_iter], [0.00, 0.00]),  # constant weight of 0.00
+    stress=ws.SmoothSteps([max_iter/4, max_iter], [1, 0.05]),
+    ideal_edge_length=ws.SmoothSteps([0, max_iter*0.2, max_iter*0.6, max_iter], [0, 0, 0.2, 0]),
+    aspect_ratio=ws.SmoothSteps([0, max_iter*0.2, max_iter*0.6, max_iter], [0, 0, 0.5, 0]),
 )
 criteria = list(criteria_weights.keys())
 
-
-
-# plot_weight(criteria_weights, max_iter)
-# plt.close()
 
 
 sample_sizes = dict(
