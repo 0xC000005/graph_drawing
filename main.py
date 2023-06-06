@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.colors import LinearSegmentedColormap
 from mpl_toolkits import mplot3d
-from matplotlib import collections  as mc
+from matplotlib import collections as mc
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 from pos_df_to_graph import pos_df_to_graph
 from collections import defaultdict
@@ -41,7 +41,7 @@ plt.style.use('seaborn-colorblind')
 DEVICE = 'cpu'
 SEED = 2337
 GRAPH_NAME = 'price_10000nodes'
-MAX_ITER = int(1e8)
+MAX_ITER = int(1e4)
 MAT_DIR = 'input_graphs/'
 
 # Set seed for reproducibility
@@ -70,12 +70,11 @@ SAMPLE_SIZES = dict(
     neighborhood_preservation=16,
     crossings=128,
     crossing_angle_maximization=16,
-    aspect_ratio=max(128, int(len(G)**0.5)),
+    aspect_ratio=max(128, int(len(G) ** 0.5)),
     angular_resolution=128,
-    vertex_resolution=max(256, int(len(G)**0.5)),
+    vertex_resolution=max(256, int(len(G) ** 0.5)),
     gabriel=64,
 )
-
 
 ## choose criteria
 CRITERIA_ALL = [
@@ -96,13 +95,12 @@ def run_optimization(G):
     result = gd.optimize(
         criteria_weights=CRITERIA_WEIGHTS,
         sample_sizes=SAMPLE_SIZES,
-        evaluate=set(CRITERIA_ALL),
+        evaluate=CRITERIA_ALL,
         max_iter=MAX_ITER,
         time_limit=3600,
-        evaluate_interval=MAX_ITER, evaluate_interval_unit='iter',
+        evaluate_interval=MAX_ITER//10, evaluate_interval_unit='iter',
         vis_interval=-1, vis_interval_unit='sec',
         clear_output=True,
-        grad_clamp=20,
         criteria_kwargs=dict(aspect_ratio=dict(target=[1, 1])),
         optimizer_kwargs=dict(mode='SGD', lr=2),
         scheduler_kwargs=dict(verbose=True),
@@ -139,6 +137,7 @@ def visualize_and_save(gd, result):
     plt.savefig(f'{GRAPH_NAME}.png', dpi=300)
     plt.close()
 
+
 def save_layout_as_dot(gd, filename):
     pos = gd.pos.detach().numpy().tolist()
     pos_G = {k: pos[gd.k2i[k]] for k in gd.G.nodes}
@@ -149,6 +148,7 @@ def save_layout_as_dot(gd, filename):
 
     # Save as .dot file
     nx.drawing.nx_pydot.write_dot(gd.G, filename)
+
 
 # turn gd into a position dataframe, format: index, vertex, x, y
 def gd_to_df(gd):
@@ -163,7 +163,6 @@ def gd_to_df(gd):
     return df
 
 
-
 # Run the optimization and print the results
 gd, result = run_optimization(G)
 print_nodes_and_edges(gd)
@@ -176,7 +175,6 @@ save_layout_as_dot(gd, 'final_layout.dot')
 pos_df = gd_to_df(gd)
 # print the first 5 rows of the dataframe
 print(pos_df.head())
-
 
 gt_graph = gt.load_graph('../netviz/sample_graphs/price_10000nodes.graphml')
 pos_df_to_graph(graphml=gt_graph, pos_df=pos_df, name='price_10000nodes_layout_by_gt')
