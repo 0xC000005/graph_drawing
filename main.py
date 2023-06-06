@@ -54,9 +54,12 @@ plt.style.use('seaborn-colorblind')
 # graph_str = 'tree_2_5'
 # dir_out = './analysis/criteria_pairs/tree_2_5-t1636413236'
 
-G = nx.grid_2d_graph(6,10)
-graph_str = 'grid_6_10'
-dir_out = './analysis/criteria_pairs/grid_6_10-t1636413141'
+# G = nx.grid_2d_graph(6,10)
+# graph_str = 'grid_6_10'
+# dir_out = './analysis/criteria_pairs/grid_6_10-t1636413141'
+
+# load graphml using networkx
+G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
 
 import importlib
 
