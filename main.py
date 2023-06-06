@@ -56,7 +56,7 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using networkx
 print('loading graph')
-G = nx.barabasi_albert_graph(n=10, m=9)
+G = nx.barabasi_albert_graph(n=10, m=8)
 print('the graph is loaded')
 
 import importlib
