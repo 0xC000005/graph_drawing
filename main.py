@@ -60,7 +60,7 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using networkx
 print('loading graph')
-G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
+G = nx.barabasi_albert_graph(n=10000, m=9999)
 print('the graph is loaded')
 
 import importlib
@@ -99,7 +99,7 @@ np.random.seed(seed)
 torch.manual_seed(seed)
 
 gd = GD2(G)
-
+print('gd is initialized')
 result = gd.optimize(
     criteria_weights=criteria_weights,
     sample_sizes=sample_sizes,
