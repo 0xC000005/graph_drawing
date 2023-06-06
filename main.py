@@ -59,7 +59,9 @@ plt.style.use('seaborn-colorblind')
 # dir_out = './analysis/criteria_pairs/grid_6_10-t1636413141'
 
 # load graphml using networkx
+print('loading graph')
 G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
+print('the graph is loaded')
 
 import importlib
 
