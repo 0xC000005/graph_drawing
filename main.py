@@ -56,8 +56,10 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using graph-tool
 print('loading graph')
-G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
+G = nx.cycle_graph(10000)
+# G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
 print('the graph is loaded')
+
 
 import importlib
 
@@ -102,7 +104,7 @@ result = gd.optimize(
     evaluate=criteria_all,
 
     max_iter=1000,
-    evaluate_interval=1000 // 40,
+    evaluate_interval=1000,
     vis_interval=-1,
     criteria_kwargs=dict(
         aspect_ratio=dict(target=[1, 1]),
