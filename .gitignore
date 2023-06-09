@@ -2,3 +2,5 @@ fig
 .ipynb_checkpoints/
 facebook
 __pycache__
+
+.idea/
