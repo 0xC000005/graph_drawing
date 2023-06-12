@@ -9,6 +9,8 @@ import gd2
 ## third party
 import networkx as nx
 import pandas as pd
+import pygraphviz as pgv
+from networkx.drawing.nx_agraph import write_dot
 from PIL import Image
 from natsort import natsorted
 
@@ -90,7 +92,7 @@ WEIGHTS_LIST = generate_weights(step_size=0.25)
 
 WEIGHTS = WEIGHTS_LIST[3]
 GRAPH_NAME = 'dolphins'
-MAX_ITER = int(1e4)
+MAX_ITER = int(1e3)
 #
 # IDEAL_EDGE_LENGTH_WEIGHT = WEIGHTS[0]
 # CROSSINGS_WEIGHT = WEIGHTS[1]
