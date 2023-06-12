@@ -88,9 +88,9 @@ def generate_weights(step_size=0.25):
 
 WEIGHTS_LIST = generate_weights(step_size=0.25)
 
-# WEIGHTS = WEIGHTS_LIST[3]
-# GRAPH_NAME = 'dolphins'
-# MAX_ITER = int(1e4)
+WEIGHTS = WEIGHTS_LIST[3]
+GRAPH_NAME = 'dolphins'
+MAX_ITER = int(1e4)
 #
 # IDEAL_EDGE_LENGTH_WEIGHT = WEIGHTS[0]
 # CROSSINGS_WEIGHT = WEIGHTS[1]
