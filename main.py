@@ -178,4 +178,11 @@ plt.close()
 
 weights_str = '_'.join(str(weight) for weight in WEIGHTS)
 file_name = f"{GRAPH_NAME}_{weights_str}"
+
+# Assign positions to nodes
+for node, pos in pos_G.items():
+    gd.G.nodes[node]['x'] = str(pos[0])
+    gd.G.nodes[node]['y'] = str(pos[1])
+
+# Write the DOT file
 write_dot(gd.G, f"{file_name}.dot")
