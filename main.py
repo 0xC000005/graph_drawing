@@ -8,7 +8,7 @@ import gd2
 
 ## third party
 import networkx as nx
-
+import pandas as pd
 from PIL import Image
 from natsort import natsorted
 
@@ -56,8 +56,11 @@ plt.style.use('seaborn-colorblind')
 
 # load graphml using graph-tool
 print('loading graph')
-G = nx.cycle_graph(10000)
-# G = nx.read_graphml('../netviz/sample_graphs/price_10000nodes.graphml')
+# G = nx.cycle_graph(10000)
+df = pd.read_csv('../netviz/sample_graphs/dolphins-edges.csv')
+df['~from'] = df['~from'].str.replace('n', '')
+df['~to'] = df['~to'].str.replace('n', '')
+G = nx.from_pandas_edgelist(df, source='~from', target='~to', create_using=nx.Graph())
 print('the graph is loaded')
 
 
@@ -72,10 +75,31 @@ import gd2
 importlib.reload(gd2)
 from gd2 import GD2
 
+def generate_weights(step_size=0.25):
+    weights_list = []
+    # iterate over possible values for each weight
+    for weight1 in np.arange(0, 1 + step_size, step_size):
+        for weight2 in np.arange(0, 1 - weight1 + step_size, step_size):
+            weight3 = 1 - weight1 - weight2
+            if weight3 >= 0:
+                weights_list.append((weight1, weight2, weight3))
+    return weights_list
+
+
+WEIGHTS_LIST = generate_weights(step_size=0.25)
+
+WEIGHTS = WEIGHTS_LIST[3]
+GRAPH_NAME = 'dolphins'
+MAX_ITER = int(1e4)
+
+IDEAL_EDGE_LENGTH_WEIGHT = WEIGHTS[0]
+CROSSINGS_WEIGHT = WEIGHTS[1]
+CROSSING_ANGLE_MAXIMIZATION_WEIGHT = WEIGHTS[2]
+
 criteria_weights = dict(
-    ideal_edge_length=0.05,
-    crossings=0.2,
-    crossing_angle_maximization=0.1,
+    ideal_edge_length=IDEAL_EDGE_LENGTH_WEIGHT,
+    crossings=CROSSINGS_WEIGHT,
+    crossing_angle_maximization=CROSSING_ANGLE_MAXIMIZATION_WEIGHT,
 )
 
 sample_sizes = dict(
@@ -103,7 +127,7 @@ result = gd.optimize(
     sample_sizes=sample_sizes,
     evaluate=criteria_all,
 
-    max_iter=1000,
+    max_iter=MAX_ITER,
     evaluate_interval=1000,
     vis_interval=-1,
     criteria_kwargs=dict(
@@ -114,6 +138,34 @@ result = gd.optimize(
 )
 print(result['qualities'])
 
+## output
+pos = gd.pos.detach().numpy().tolist()
+pos_G = {k:pos[gd.k2i[k]] for k in gd.G.nodes}
+
+print('nodes')
+for node_id, pos in pos_G.items():
+    print(f'{node_id}, {pos[0]}, {pos[1]}')
+
+print('edges')
+for e in gd.G.edges:
+    print(f'{e[0]}, {e[1]}')
 
 
 # visulized the network from netwokrx
+## vis
+vis.plot(
+    gd.G, pos_G,
+    [gd.iters, gd.loss_curve],
+    result['iter'], result['runtime'],
+    criteria_weights, MAX_ITER,
+    # show=True, save=False,
+    node_size=1,
+    edge_width=1,
+)
+# plt.show()
+
+# save the plot as img.png
+plt.savefig(f'{GRAPH_NAME}.png',
+            dpi=300)
+
+plt.close()
