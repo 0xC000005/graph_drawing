@@ -184,5 +184,10 @@ for node, pos in pos_G.items():
     gd.G.nodes[node]['x'] = str(pos[0])
     gd.G.nodes[node]['y'] = str(pos[1])
 
+# remove pos attribute
+for node in gd.G.nodes:
+    gd.G.nodes[node].pop('pos', None)
+    
+
 # Write the DOT file
 write_dot(gd.G, f"{file_name}.dot")
