@@ -173,3 +173,7 @@ plt.savefig(f'{GRAPH_NAME}.png',
             dpi=300)
 
 plt.close()
+
+weights_str = '_'.join(str(weight) for weight in WEIGHTS)
+file_name = f"{GRAPH_NAME}_{weights_str}"
+nx.write_dot(gd.G, f"{file_name}.dot")
