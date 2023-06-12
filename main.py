@@ -92,102 +92,112 @@ WEIGHTS_LIST = generate_weights(step_size=0.25)
 
 WEIGHTS = WEIGHTS_LIST[3]
 GRAPH_NAME = 'dolphins'
-MAX_ITER = int(1e3)
-#
-# IDEAL_EDGE_LENGTH_WEIGHT = WEIGHTS[0]
-# CROSSINGS_WEIGHT = WEIGHTS[1]
-# CROSSING_ANGLE_MAXIMIZATION_WEIGHT = WEIGHTS[2]
+MAX_ITER = int(1e4)
 
-IDEAL_EDGE_LENGTH_WEIGHT = 0.125
-CROSSINGS_WEIGHT = 0.75
-CROSSING_ANGLE_MAXIMIZATION_WEIGHT = 0.125
+for WEIGHTS in WEIGHTS_LIST:
+    # print weights
+    print('weights: {}'.format(WEIGHTS))
+    # time this run
+    start_time = time.time()
 
-criteria_weights = dict(
-    ideal_edge_length=IDEAL_EDGE_LENGTH_WEIGHT,
-    crossings=CROSSINGS_WEIGHT,
-    crossing_angle_maximization=CROSSING_ANGLE_MAXIMIZATION_WEIGHT,
-)
+    IDEAL_EDGE_LENGTH_WEIGHT = WEIGHTS[0]
+    CROSSINGS_WEIGHT = WEIGHTS[1]
+    CROSSING_ANGLE_MAXIMIZATION_WEIGHT = WEIGHTS[2]
 
-sample_sizes = dict(
-    ideal_edge_length=32,
-    crossings=128,
-    crossing_angle_maximization=16,
-)
+    criteria_weights = dict(
+        ideal_edge_length=IDEAL_EDGE_LENGTH_WEIGHT,
+        crossings=CROSSINGS_WEIGHT,
+        crossing_angle_maximization=CROSSING_ANGLE_MAXIMIZATION_WEIGHT,
+    )
 
-## choose criteria
-criteria_all = [
-    'ideal_edge_length',
-    'crossings',
-    'crossing_angle_maximization',
-]
+    sample_sizes = dict(
+        ideal_edge_length=32,
+        crossings=128,
+        crossing_angle_maximization=16,
+    )
 
-seed = 2337
-random.seed(seed)
-np.random.seed(seed)
-torch.manual_seed(seed)
+    ## choose criteria
+    criteria_all = [
+        'ideal_edge_length',
+        'crossings',
+        'crossing_angle_maximization',
+    ]
 
-gd = GD2(G)
-print('gd is initialized')
-result = gd.optimize(
-    criteria_weights=criteria_weights,
-    sample_sizes=sample_sizes,
-    evaluate=criteria_all,
+    seed = 2337
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
 
-    max_iter=MAX_ITER,
-    evaluate_interval=1000,
-    vis_interval=-1,
-    criteria_kwargs=dict(
-        aspect_ratio=dict(target=[1, 1]),
-    ),
-    optimizer_kwargs=dict(mode='SGD', lr=2),
-    scheduler_kwargs=dict(verbose=False),
-)
-print(result['qualities'])
+    gd = GD2(G)
+    print('gd is initialized')
+    result = gd.optimize(
+        criteria_weights=criteria_weights,
+        sample_sizes=sample_sizes,
+        evaluate=criteria_all,
 
-## output
-pos = gd.pos.detach().numpy().tolist()
-pos_G = {k:pos[gd.k2i[k]] for k in gd.G.nodes}
+        max_iter=MAX_ITER,
+        evaluate_interval=1000,
+        vis_interval=-1,
+        criteria_kwargs=dict(
+            aspect_ratio=dict(target=[1, 1]),
+        ),
+        optimizer_kwargs=dict(mode='SGD', lr=2),
+        scheduler_kwargs=dict(verbose=False),
+    )
+    print(result['qualities'])
 
-print('nodes')
-for node_id, pos in pos_G.items():
-    print(f'{node_id}, {pos[0]}, {pos[1]}')
+    ## output
+    pos = gd.pos.detach().numpy().tolist()
+    pos_G = {k:pos[gd.k2i[k]] for k in gd.G.nodes}
 
-print('edges')
-for e in gd.G.edges:
-    print(f'{e[0]}, {e[1]}')
+    # print('nodes')
+    # for node_id, pos in pos_G.items():
+    #     print(f'{node_id}, {pos[0]}, {pos[1]}')
+    #
+    # print('edges')
+    # for e in gd.G.edges:
+    #     print(f'{e[0]}, {e[1]}')
+
+    # end of timing
+    end_time = time.time()
+    print(f'runtime: {end_time - start_time}')
+
+    weights_str = '_'.join(str(weight) for weight in WEIGHTS)
+    file_name = f"{GRAPH_NAME}_{weights_str}"
+
+    # save the runtime as a txt file
+    with open(f'{"time" + file_name}.txt', 'w') as f:
+        f.write(f'{end_time - start_time}')
+
+    # visulized the network from netwokrx
+    ## vis
+    vis.plot(
+        gd.G, pos_G,
+        [gd.iters, gd.loss_curve],
+        result['iter'], result['runtime'],
+        criteria_weights, MAX_ITER,
+        # show=True, save=False,
+        node_size=1,
+        edge_width=1,
+    )
+    # plt.show()
+
+    # save the plot as img.png
+    plt.savefig(f'{file_name}.png',
+                dpi=300)
+
+    plt.close()
 
 
-# visulized the network from netwokrx
-## vis
-vis.plot(
-    gd.G, pos_G,
-    [gd.iters, gd.loss_curve],
-    result['iter'], result['runtime'],
-    criteria_weights, MAX_ITER,
-    # show=True, save=False,
-    node_size=1,
-    edge_width=1,
-)
-# plt.show()
+    # Assign positions to nodes
+    for node, pos in pos_G.items():
+        gd.G.nodes[node]['x'] = str(pos[0])
+        gd.G.nodes[node]['y'] = str(pos[1])
 
-# save the plot as img.png
-plt.savefig(f'{GRAPH_NAME}.png',
-            dpi=300)
+    # remove pos attribute
+    for node in gd.G.nodes:
+        gd.G.nodes[node].pop('pos', None)
 
-plt.close()
 
-weights_str = '_'.join(str(weight) for weight in WEIGHTS)
-file_name = f"{GRAPH_NAME}_{weights_str}"
-
-# Assign positions to nodes
-for node, pos in pos_G.items():
-    gd.G.nodes[node]['x'] = str(pos[0])
-    gd.G.nodes[node]['y'] = str(pos[1])
-
-# remove pos attribute
-for node in gd.G.nodes:
-    gd.G.nodes[node].pop('pos', None)
-    
-
-# Write the DOT file
-write_dot(gd.G, f"{file_name}.dot")
+    # Write the DOT file
+    write_dot(gd.G, f"{file_name}.dot")
