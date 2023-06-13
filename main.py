@@ -59,7 +59,7 @@ plt.style.use('seaborn-colorblind')
 # load graphml using graph-tool
 print('loading graph')
 # G = nx.cycle_graph(10000)
-df = pd.read_csv('../netviz/sample_graphs/dolphins-edges.csv')
+df = pd.read_csv('../netviz/sample_graphs/polblogs-edges.csv')
 df['~from'] = df['~from'].str.replace('n', '')
 df['~to'] = df['~to'].str.replace('n', '')
 G = nx.from_pandas_edgelist(df, source='~from', target='~to', create_using=nx.Graph())
@@ -166,7 +166,7 @@ for WEIGHTS in WEIGHTS_LIST:
     file_name = f"{GRAPH_NAME}_{weights_str}"
 
     # save the runtime as a txt file
-    with open(f'{"time" + file_name}.txt', 'w') as f:
+    with open(f'{"time_" + file_name}.txt', 'w') as f:
         f.write(f'{end_time - start_time}')
 
     # visulized the network from netwokrx
