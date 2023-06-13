@@ -91,7 +91,7 @@ def generate_weights(step_size=0.25):
 WEIGHTS_LIST = generate_weights(step_size=0.25)
 
 WEIGHTS = WEIGHTS_LIST[3]
-GRAPH_NAME = 'dolphins'
+GRAPH_NAME = 'polblogs'
 MAX_ITER = int(1e4)
 
 for WEIGHTS in WEIGHTS_LIST:
